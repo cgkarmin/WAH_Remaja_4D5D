@@ -28,7 +28,8 @@ st.write(selected_wah['Terjemahan'])
 st.subheader("💡 Hikmah")
 st.write(selected_wah['Hikmah'])
 st.subheader("🎭 Pantun Warisan")
-st.write(selected_wah['Pantun'])
+st.write('
+'.join(selected_wah['Pantun'].split('|'))
 
 # Generate QR Code yang menghala ke Streamlit
 app_url = f"https://wahremaja4d5d-chou8jzqlcu4wnksjkiqew.streamlit.app/?kod={selected_kod}"
