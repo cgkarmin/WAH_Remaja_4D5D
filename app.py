@@ -27,8 +27,17 @@ st.subheader("📖 Terjemahan")
 st.write(selected_wah['Terjemahan'])
 st.subheader("💡 Hikmah")
 st.write(selected_wah['Hikmah'])
+
+# Format Pantun sebagai 1 rangkap (4 baris)
 st.subheader("🎭 Pantun Warisan")
-st.write('\n'.join(selected_wah['Pantun'].split('|')))
+pantun_lines = selected_wah['Pantun'].split('|')  # Pisahkan baris pantun
+if len(pantun_lines) % 4 == 0:  # Pastikan bilangan baris adalah gandaan 4
+    for i in range(0, len(pantun_lines), 4):  # Setiap 4 baris sebagai satu rangkap
+        rangkap = pantun_lines[i:i+4]  # Ambil 4 baris
+        st.write("\n".join(rangkap))  # Paparkan sebagai satu rangkap
+        st.write("")  # Tambah jarak antara rangkap
+else:
+    st.warning("Format pantun tidak lengkap. Sila pastikan setiap rangkap mempunyai 4 baris.")
 
 # Generate QR Code yang menghala ke Streamlit
 app_url = f"https://wahremaja4d5d-chou8jzqlcu4wnksjkiqew.streamlit.app/?kod={selected_kod}"
