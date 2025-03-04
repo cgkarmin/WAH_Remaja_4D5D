@@ -26,7 +26,7 @@ st.subheader("🎭 Pantun Warisan")
 st.write(selected_wah['Pantun'])
 
 # Generate QR Code for Ayat
-qr = qrcode.make(f"https://quran.com/{selected_wah['Surah'].replace(' ', '-')}/{selected_wah['Ayat']}")
+qr = qrcode.make(f"https://quran.com/{selected_wah['Ayat']}")
 buffer = BytesIO()
 qr.save(buffer, format="PNG")
 st.image(buffer.getvalue(), caption="Scan QR untuk Ayat Penuh", use_container_width=True)
