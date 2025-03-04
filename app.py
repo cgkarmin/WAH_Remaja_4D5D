@@ -7,14 +7,19 @@ import os
 # Load WAH data from CSV
 wah_data = pd.read_csv("wah_data.csv", dtype={"Kod": str})
 
-# Streamlit UI
-st.title("📖 WAH: Warisan, Ayat, Hikmah (4D/5D)")
+# Dapatkan parameter dari URL
+query_params = st.query_params
+selected_kod = query_params.get("kod", [None])[0]
 
-# Pilih kod 4D/5D
-selected_kod = st.selectbox("Pilih Kod WAH", wah_data["Kod"])
-selected_wah = wah_data[wah_data["Kod"] == selected_kod].iloc[0]
+# Jika ada kod dalam URL, paparkan WAH yang sepadan
+if selected_kod and selected_kod in wah_data["Kod"].values:
+    selected_wah = wah_data[wah_data["Kod"] == selected_kod].iloc[0]
+else:
+    selected_kod = st.selectbox("Pilih Kod WAH", wah_data["Kod"])
+    selected_wah = wah_data[wah_data["Kod"] == selected_kod].iloc[0]
 
 # Paparkan Maklumat WAH
+st.title("📖 WAH: Warisan, Ayat, Hikmah (4D/5D)")
 st.header(f"{selected_wah['Surah']} - Ayat {selected_wah['Ayat']}")
 st.subheader("📜 Ayat al-Quran")
 st.write(selected_wah['Ayat_Arab'])
@@ -25,11 +30,12 @@ st.write(selected_wah['Hikmah'])
 st.subheader("🎭 Pantun Warisan")
 st.write(selected_wah['Pantun'])
 
-# Generate QR Code for Ayat
-qr = qrcode.make(f"https://quran.com/{selected_wah['Ayat']}")
+# Generate QR Code yang menghala ke Streamlit
+app_url = f"https://wah-remaja.streamlit.app/?kod={selected_wah['Kod']}"
+qr = qrcode.make(app_url)
 buffer = BytesIO()
 qr.save(buffer, format="PNG")
-st.image(buffer.getvalue(), caption="Scan QR untuk Ayat Penuh", use_container_width=True)
+st.image(buffer.getvalue(), caption="Scan QR untuk melihat halaman ini", use_container_width=True)
 
 # Simpan komen dalam CSV
 komen_file = "komen.csv"
