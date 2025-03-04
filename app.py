@@ -3,6 +3,7 @@ import pandas as pd
 import qrcode
 from io import BytesIO
 import os
+import string  # Untuk mengurus tanda baca
 
 # Load WAH data from CSV
 wah_data = pd.read_csv("wah_data.csv", dtype={"Kod": str})
@@ -33,8 +34,12 @@ st.subheader("🎭 Pantun Warisan")
 if 'Pantun' in selected_wah:  # Pastikan kolom 'Pantun' wujud
     pantun = selected_wah['Pantun'].strip('"')  # Buang tanda petik di awal dan akhir
     
-    # Paparkan pantun seperti dalam database
-    st.write(pantun.replace("\\n", "\n"))  # Gantikan \n dengan baris baru
+    # Buang tanda baca di hujung baris (jika ada)
+    pantun_lines = pantun.split('\n')  # Pisahkan baris pantun
+    pantun_lines = [line.rstrip(string.punctuation) for line in pantun_lines]  # Buang tanda baca di hujung baris
+    pantun = '\n'.join(pantun_lines)  # Gabungkan semula baris pantun
+    
+    st.write(pantun)  # Paparkan pantun
     st.write("")  # Tambah jarak antara rangkap (jika ada rangkap seterusnya)
 else:
     st.warning("Tiada data pantun ditemui.")
