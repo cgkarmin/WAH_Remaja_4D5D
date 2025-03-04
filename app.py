@@ -8,7 +8,7 @@ import os
 wah_data = pd.read_csv("wah_data.csv", dtype={"Kod": str})
 
 # Dapatkan parameter dari URL
-query_params = st.experimental_get_query_params()
+query_params = st.query_params
 selected_kod = query_params.get("kod", [None])[0]
 
 # Jika ada kod dalam URL, paparkan WAH yang sepadan
