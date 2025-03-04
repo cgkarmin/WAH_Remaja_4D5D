@@ -27,20 +27,25 @@ st.subheader("📖 Terjemahan")
 st.write(selected_wah['Terjemahan'])
 st.subheader("💡 Hikmah")
 st.write(selected_wah['Hikmah'])
-st.subheader("🎭 Pantun Warisan")
-pantun_baris = selected_wah['Pantun'].split('|')
-if len(pantun_baris) == 5 and pantun_baris[0].startswith('Pantun bagi ayat ini:'):
-    pantun_baris = pantun_baris[1:]
-st.write("
-".join(pantun_baris))
 
+# Format Pantun sebagai 1 rangkap (4 baris)
+st.subheader("🎭 Pantun Warisan")
+if 'Pantun' in selected_wah:  # Pastikan kolom 'Pantun' wujud
+    pantun = selected_wah['Pantun'].strip('"')  # Buang tanda petik di awal dan akhir
+    
+    # Paparkan pantun seperti dalam database
+    st.write(pantun.replace("\\n", "\n"))  # Gantikan \n dengan baris baru
+    st.write("")  # Tambah jarak antara rangkap (jika ada rangkap seterusnya)
+else:
+    st.warning("Tiada data pantun ditemui.")
 
 # Generate QR Code yang menghala ke Streamlit
 app_url = f"https://wahremaja4d5d-chou8jzqlcu4wnksjkiqew.streamlit.app/?kod={selected_kod}"
 qr = qrcode.make(app_url)
 buffer = BytesIO()
 qr.save(buffer, format="PNG")
-st.image(buffer.getvalue(), caption="Scan QR untuk melihat halaman ini", use_container_width=True)
+buffer.seek(0)
+st.image(buffer, caption="Scan QR untuk melihat halaman ini", use_container_width=True)
 
 # Simpan komen dalam CSV
 komen_file = "komen.csv"
@@ -52,8 +57,12 @@ st.subheader("💬 Komen & Refleksi")
 comment = st.text_area("Apa pendapat anda tentang ayat ini?")
 if st.button("Hantar Komen"):
     if comment:
-        new_komen = pd.DataFrame([[selected_wah["Kod"].replace(',', ''), selected_wah["Surah"], selected_wah["Ayat"], comment]],
-                                 columns=["Kod", "Surah", "Ayat", "Komen"])
+        new_komen = pd.DataFrame({
+            "Kod": [selected_wah["Kod"].replace(',', '')],
+            "Surah": [selected_wah["Surah"]],
+            "Ayat": [selected_wah["Ayat"]],
+            "Komen": [comment]
+        })
         new_komen.to_csv(komen_file, mode="a", header=False, index=False)
         st.success("Komen anda telah disimpan!")
     else:
