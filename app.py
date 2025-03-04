@@ -31,6 +31,7 @@ st.subheader("🎭 Pantun Warisan")
 st.write('
 '.join(selected_wah['Pantun'].split('|')))
 
+
 # Generate QR Code yang menghala ke Streamlit
 app_url = f"https://wahremaja4d5d-chou8jzqlcu4wnksjkiqew.streamlit.app/?kod={selected_kod}"
 qr = qrcode.make(app_url)
