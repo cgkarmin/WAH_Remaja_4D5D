@@ -32,14 +32,16 @@ st.write(selected_wah['Hikmah'])
 st.subheader("🎭 Pantun Warisan")
 if 'Pantun' in selected_wah:  # Pastikan kolom 'Pantun' wujud
     pantun = selected_wah['Pantun'].strip('"')  # Buang tanda petik di awal dan akhir
+    
+    # Buang teks "Pantun bagi ayat ini:" jika ada
+    if pantun.startswith("Pantun bagi ayat ini:"):
+        pantun = pantun.replace("Pantun bagi ayat ini:", "").strip()
+    
     pantun_lines = pantun.split('|')  # Pisahkan baris pantun
-    if len(pantun_lines) % 4 == 0:  # Pastikan bilangan baris adalah gandaan 4
-        for i in range(0, len(pantun_lines), 4):  # Setiap 4 baris sebagai satu rangkap
-            rangkap = pantun_lines[i:i+4]  # Ambil 4 baris
-            st.write("\n".join(rangkap))  # Paparkan sebagai satu rangkap
-            st.write("")  # Tambah jarak antara rangkap
-    else:
-        st.warning("Format pantun tidak lengkap. Sila pastikan setiap rangkap mempunyai 4 baris.")
+    for i in range(0, len(pantun_lines), 4):  # Setiap 4 baris sebagai satu rangkap
+        rangkap = pantun_lines[i:i+4]  # Ambil 4 baris (atau baki baris jika kurang daripada 4)
+        st.write("\n".join(rangkap))  # Paparkan sebagai satu rangkap
+        st.write("")  # Tambah jarak antara rangkap
 else:
     st.warning("Tiada data pantun ditemui.")
 
