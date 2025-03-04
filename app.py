@@ -29,7 +29,7 @@ st.write(selected_wah['Pantun'])
 qr = qrcode.make(f"https://quran.com/{selected_wah['Surah'].replace(' ', '-')}/{selected_wah['Ayat']}")
 buffer = BytesIO()
 qr.save(buffer, format="PNG")
-st.image(buffer.getvalue(), caption="Scan QR untuk Ayat Penuh", use_column_width=False)
+st.image(buffer.getvalue(), caption="Scan QR untuk Ayat Penuh", use_container_width=True)
 
 # Simpan komen dalam CSV
 komen_file = "komen.csv"
